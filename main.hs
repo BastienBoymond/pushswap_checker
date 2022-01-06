@@ -35,3 +35,19 @@ pb :: [Int] -> [Int] -> ([Int], [Int])
 pb [a] [] = ([a], [])
 pb [] [] = ([], [])
 pb (a:b) (c:d) = ((b), (a:c:d))
+
+ra :: [Int] -> [Int]
+ra [] = []
+ra [a] = [a]
+ra (a:b:as) = b:as ++ [a]
+
+rb :: [Int] -> [Int]
+rb [] = []
+rb [a] = [a]
+rb (a:b:as) = b:as ++ [a]
+
+rr :: [Int] -> [Int] -> ([Int], [Int])
+rr [] [] = ([], [])
+rr a [] = (ra a, [])
+rr [] a = ([], rb a)
+rr a b = (ra a, rb b)
