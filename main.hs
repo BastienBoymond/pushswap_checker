@@ -25,3 +25,13 @@ sc [] [] = ([], [])
 sc a [] = (sa a, [])
 sc [] a = ([], sb a)
 sc a b = (sa a, sb b)
+
+pa :: [Int] -> [Int] -> ([Int], [Int])
+pa [a] [] = ([a], [])
+pa [] [] = ([], [])
+pa (a:b) (c:d) = ((c:a:b), (d))
+
+pb :: [Int] -> [Int] -> ([Int], [Int])
+pb [a] [] = ([a], [])
+pb [] [] = ([], [])
+pb (a:b) (c:d) = ((b), (a:c:d))
