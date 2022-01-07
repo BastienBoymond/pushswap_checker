@@ -4,6 +4,7 @@ import Data.Text hiding (last, init, map)
 import Data.Char
 import System.Environment
 import Text.Read (readMaybe)
+import System.Exit
 
 myStwa :: String -> [Text]
 myStwa "" = []
@@ -79,12 +80,14 @@ argsIntToIntList :: [String] -> [Maybe Int]
 argsIntToIntList [] = []
 argsIntToIntList (a:as) = map readMaybe (a:as)
 
-
 main :: IO ()
 main = do
     actionsStr <- getLine
-    intArgs <- getArgs
-    let intList = argsIntToIntList intArgs
+    args <- getArgs
+    let intList = argsIntToIntList args
     let actions = myStwa actionsStr
+    case elem Nothing intList of
+        True -> exitWith(ExitFailure 84)
+        False -> print intList
     print actions
     print intList
