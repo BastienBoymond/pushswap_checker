@@ -35,7 +35,7 @@ clean:
 fclean:	clean
 	$(RM) $(TARGET)
 
-test_run:
+tests_run:
 	$(CC) -main-is Tests $(SRC_TEST) -o ${TARGET_TEST}
 	./units_tests
 
