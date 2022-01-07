@@ -1,3 +1,4 @@
+module Pushswap where
 import System.Environment
 import Data.Char
 import Data.List.Split
@@ -8,9 +9,9 @@ import Text.Read
 
 myStwa :: String -> [String]
 myStwa "" = []
-myStwa s = splitOn ' ' s
+myStwa s = splitOn " " s
 
-myCheckListSort :: [Int] -> Bool
+myCheckListSort :: [Maybe Int] -> Bool
 myCheckListSort [] = True
 myCheckListSort [a] = True
 myCheckListSort (a:b:xs) | a > b = False
@@ -65,16 +66,16 @@ rra [] = []
 rra [a] = [a]
 rra (a:as) = last (a:as) : init (a:as)
 
-rrb :: [Int] -> [Int]
+rrb :: [Maybe Int] -> [Maybe Int]
 rrb [] = []
 rrb [a] = [a]
 rrb (a:as) = last (a:as) : init (a:as)
 
-rrr :: [Int] -> [Int] -> ([Int], [Int])
-rrr [] [] = ([], [])
-rrr a [] = (rra a, [])
-rrr [] a = ([], rrb a)
-rrr a b = (rra a, rrb b)
+-- rrr :: [Int] -> [Int] -> ([Int], [Int])
+-- rrr [] [] = ([], [])
+-- rrr a [] = (rra a, [])
+-- rrr [] a = ([], rrb a)
+-- rrr a b = (rra a, rrb b)
 
 argsIntToIntList :: [String] -> [Maybe Int]
 argsIntToIntList [] = []
@@ -96,14 +97,14 @@ findActions ("ra":b)  (a:as) = getAction "ra" (a:as)
 findActions ("rb":b)  (a:as) = getAction "rb" (a:as)
 findActions ("rrr":b)  (a:as) = getAction "rrr" (a:as)
 
+doProcess :: [String] -> [Maybe Int] -> String
+doProcess a b =  if myCheckListSort (findActions a b) then "OK" else "KO"
+
 main :: IO ()
 main = do
     actionsStr <- getLine
     args <- getArgs
     let intList = argsIntToIntList args
     let actions = myStwa actionsStr
-    case elem Nothing intList of
-        True -> exitWith(ExitFailure 84)
-    findActions actions intList
-    print actions
-    print intList
+    if Nothing `elem` intList then exitWith(ExitFailure 84) 
+    else print (doProcess actions intList)
