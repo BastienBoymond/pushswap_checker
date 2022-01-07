@@ -1,14 +1,14 @@
-{-# OPTIONS_GHC -Wno-incomplete-patterns #-}
-module Pushswap where
-import Data.Text hiding (last, init, map)
-import Data.Char
 import System.Environment
-import Text.Read (readMaybe)
+import Data.Char
+import Data.List.Split
 import System.Exit
+import System.IO
+import Data.Maybe
+import Text.Read
 
-myStwa :: String -> [Text]
+myStwa :: String -> [String]
 myStwa "" = []
-myStwa s = splitOn (pack " ")  (pack s)
+myStwa s = splitOn ' ' s
 
 myCheckListSort :: [Int] -> Bool
 myCheckListSort [] = True
@@ -80,6 +80,22 @@ argsIntToIntList :: [String] -> [Maybe Int]
 argsIntToIntList [] = []
 argsIntToIntList (a:as) = map readMaybe (a:as)
 
+getAction :: String -> ([Maybe Int] -> [Maybe Int])
+getAction _ = rrb
+
+findActions :: [String] -> [Maybe Int] -> [Maybe Int]
+findActions ("sa":b)  (a:as) = getAction "sa" (a:as)
+findActions ("sb":b)  (a:as) = getAction "sb" (a:as)
+findActions ("sc":b)  (a:as) = getAction "sc" (a:as)
+findActions ("pa":b)  (a:as) = getAction "pa" (a:as)
+findActions ("pb":b)  (a:as) = getAction "pb" (a:as)
+findActions ("ra":b)  (a:as) = getAction "ra" (a:as)
+findActions ("rb":b)  (a:as) = getAction "rb" (a:as)
+findActions ("rr":b)  (a:as) = getAction "rr" (a:as)
+findActions ("ra":b)  (a:as) = getAction "ra" (a:as)
+findActions ("rb":b)  (a:as) = getAction "rb" (a:as)
+findActions ("rrr":b)  (a:as) = getAction "rrr" (a:as)
+
 main :: IO ()
 main = do
     actionsStr <- getLine
@@ -88,6 +104,6 @@ main = do
     let actions = myStwa actionsStr
     case elem Nothing intList of
         True -> exitWith(ExitFailure 84)
-        False -> print intList
+    findActions actions intList
     print actions
     print intList
