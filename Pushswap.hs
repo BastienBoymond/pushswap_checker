@@ -1,7 +1,8 @@
 module Pushswap where
-import Data.Text hiding (last, init)
+import Data.Text hiding (last, init, map)
 import Data.Char
 import System.Environment
+import Text.Read (readMaybe)
 
 myStwa :: String -> [Text]
 myStwa "" = []
@@ -73,7 +74,8 @@ rrr a b = (rra a, rrb b)
 
 argsIntToIntList :: [String] -> [Maybe Int]
 argsIntToIntList [] = []
-argsIntToIntList (a:as) = (read a :: (Maybe Int)) : argsIntToIntList as
+argsIntToIntList (a:as) = map readMaybe (a:as)
+
 
 main :: IO ()
 main = do
