@@ -1,4 +1,6 @@
 import Data.Text
+import Data.Char
+import System.Environment
 
 myStwa :: String -> [Text]
 myStwa "" = []
@@ -86,3 +88,15 @@ myLast (a:as) = myLast as
 myLength :: [a] -> Int
 myLength [] = 0
 myLength (a: as) = 1 + myLength as
+
+argsIntToIntList :: [String] -> [Maybe Int]
+argsIntToIntList [] = []
+argsIntToIntList (a:as) = (read a :: (Maybe Int)) : argsIntToIntList as
+
+main = do
+    actionsStr <- getLine
+    intArgs <- getArgs
+    let intList = argsIntToIntList intArgs
+    let actions = myStwa actionsStr
+    print actions
+    print intList
