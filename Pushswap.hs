@@ -33,11 +33,13 @@ pa :: [Int] -> [Int] -> ([Int], [Int])
 pa [a] [] = ([a], [])
 pa [] [] = ([], [])
 pa (a:b) (c:d) = (c:a:b, d)
+pa _ _ = ([], [])
 
 pb :: [Int] -> [Int] -> ([Int], [Int])
 pb [] [b] = ([], [b])
 pb [] [] = ([], [])
 pb (a:b) (c:d) = (b, a:c:d)
+pb _ _ = ([], [])
 
 ra :: [Int] -> [Int]
 ra [] = []
