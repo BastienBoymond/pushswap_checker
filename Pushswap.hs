@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wno-incomplete-patterns #-}
 module Pushswap where
 import Data.Text hiding (last, init, map)
 import Data.Char
