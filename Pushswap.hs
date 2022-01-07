@@ -1,5 +1,5 @@
 module Pushswap where
-import Data.Text
+import Data.Text hiding (last, init)
 import Data.Char
 import System.Environment
 
@@ -58,37 +58,18 @@ rr a b = (ra a, rb b)
 rra :: [Int] -> [Int]
 rra [] = []
 rra [a] = [a]
-rra (a:as) = myLast (a:as) : myInit (a:as)
+rra (a:as) = last (a:as) : init (a:as)
 
 rrb :: [Int] -> [Int]
 rrb [] = []
 rrb [a] = [a]
-rrb (a:as) = myLast (a:as) : myInit (a:as)
+rrb (a:as) = last (a:as) : init (a:as)
 
 rrr :: [Int] -> [Int] -> ([Int], [Int])
 rrr [] [] = ([], [])
 rrr a [] = (rra a, [])
 rrr [] a = ([], rrb a)
 rrr a b = (rra a, rrb b)
-
-myTake :: Int -> [a] -> [a]
-myTake i [] = error "The list is empty"
-myTake i (a:as) | myLength (a:as) < i = a:as
-myTake i (a:as) | i <= 0 = []
-myTake i (a:as) = a:myTake (i - 1) as
-
-myInit :: [a] -> [a]
-myInit [] = error "The list is empty"
-myInit (a:as) = myTake (myLength (a:as) - 1) (a:as)
-
-myLast :: [a] -> a
-myLast [] = error "The list is empty"
-myLast [a] = a
-myLast (a:as) = myLast as
-
-myLength :: [a] -> Int
-myLength [] = 0
-myLength (a: as) = 1 + myLength as
 
 argsIntToIntList :: [String] -> [Maybe Int]
 argsIntToIntList [] = []
