@@ -1,3 +1,4 @@
+module Pushswap where
 import Data.Text
 import Data.Char
 import System.Environment
@@ -93,6 +94,7 @@ argsIntToIntList :: [String] -> [Maybe Int]
 argsIntToIntList [] = []
 argsIntToIntList (a:as) = (read a :: (Maybe Int)) : argsIntToIntList as
 
+main :: IO ()
 main = do
     actionsStr <- getLine
     intArgs <- getArgs

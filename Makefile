@@ -5,28 +5,38 @@
 ## haskell file compiler
 ##
 
-
 RM    =    rm -f
 
 CC    =    ghc
 
-TARGET    =    doop
+TARGET    =    pushswap_checker
 
-SRC1    =    DoOp.hs    \
+TARGET_TEST = units_tests
+
+SRC1    =    Pushswap.hs    \
+
+SRC_TEST	=	tests/tests.hs \
 
 all:	$(TARGET)
 
 $(TARGET):
-	$(CC) $(SRC1)  -o $@
+	$(CC) -main-is Pushswap $(SRC1)  -o $(TARGET)
 
 clean:
+	$(RM) $(TARGET)
+	$(RM) $(TARGET_TEST)
 	$(RM) *.o
 	$(RM) *.hi
 	$(RM) *~
-	$(RM) *.gcda
-	$(RM) *.gcno
+	$(RM) ./tests/*.o
+	$(RM) ./tests/*.hi
+	$(RM) ./tests/*~
 
 fclean:	clean
 	$(RM) $(TARGET)
+
+test_run:
+	$(CC) -main-is Tests $(SRC_TEST) -o ${TARGET_TEST}
+	./units_tests
 
 re:	fclean all
