@@ -1,0 +1,18 @@
+on: push
+
+jobs:
+  publish:
+    name: Verification of compile projet
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-haskell@v1.1
+        with:
+          ghc-version: '8.10.7'
+          enable-stack: true
+          stack-version: 'latest'
+      - run: make
+      - run: make fclean
+      - run: make re
+      - run: make tests_run
+      - run: make && ./tests/test.sh

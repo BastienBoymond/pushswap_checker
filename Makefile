@@ -13,14 +13,17 @@ TARGET    =    pushswap_checker
 
 TARGET_TEST = units_tests
 
-SRC1    =    Pushswap.hs    \
+SRC1    =	Pushswap.hs    \
+			Actions.hs		\
+			Outils.hs		\
+			Findactions.hs		\
 
 SRC_TEST	=	tests/tests.hs \
 
 all:	$(TARGET)
 
 $(TARGET):
-	$(CC) -main-is Pushswap $(SRC1)  -o $(TARGET)
+	$(CC) -main-is Pushswap $(SRC1) -o $(TARGET)
 
 clean:
 	$(RM) $(TARGET)
