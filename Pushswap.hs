@@ -1,8 +1,7 @@
-{-# OPTIONS_GHC -Wno-incomplete-patterns #-}
 module Pushswap where
 import System.Environment
 import Data.Char
--- import Data.List.Split
+import Data.List.Split
 import System.Exit
 import System.IO
 import Data.Maybe
