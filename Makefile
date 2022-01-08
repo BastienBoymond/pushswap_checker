@@ -30,7 +30,6 @@ clean:
 	$(RM) $(TARGET_TEST)
 	$(RM) *.o
 	$(RM) *.hi
-	$(RM) *~
 	$(RM) ./tests/*.o
 	$(RM) ./tests/*.hi
 	$(RM) ./tests/*~
