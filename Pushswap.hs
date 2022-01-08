@@ -11,21 +11,24 @@ myStwa :: String -> [String]
 myStwa "" = []
 myStwa s = splitOn " " s
 
-myCheckListSort :: [Maybe Int] -> Bool
-myCheckListSort [] = True
-myCheckListSort [a] = True
-myCheckListSort (a:b:xs) | a > b = False
-myCheckListSort (a:as) = myCheckListSort as
+myCheckListSort :: ([Maybe Int], [Maybe Int]) -> Bool
+myCheckListSort ([], []) = True
+myCheckListSort ([a], []) = True
+myCheckListSort (a:b:xs, []) | a > b = False
+myCheckListSort (a:as, []) = myCheckListSort (as, [])
+myCheckListSort (_ , a) = False
 
 sa :: [Maybe Int] -> [Maybe Int] -> ([Maybe Int], [Maybe Int])
 sa [] [] = ([],[])
 sa [a] [] = ([a], [])
 sa (a:b:as) [] = (b:a:as, [])
+sa _ _ = ([], [])
 
 sb :: [Maybe Int] -> [Maybe Int] -> ([Maybe Int], [Maybe Int])
 sb [] [] = ([],[])
 sb [] [a] = ([], [a])
 sb [] (a:b:as) = ([], b:a:as)
+sb _ _ = ([], [])
 
 sc :: [Maybe Int] -> [Maybe Int] -> ([Maybe Int], [Maybe Int])
 sc [] [] = ([], [])
@@ -49,11 +52,13 @@ ra :: [Maybe Int] -> [Maybe Int] -> ([Maybe Int], [Maybe Int])
 ra [] [] = ([], [])
 ra [a] [] = ([a], [])
 ra (a:b:as) [] = (b:as ++ [a], [])
+ra _ _ = ([], [])
 
 rb :: [Maybe Int] -> [Maybe Int] -> ([Maybe Int], [Maybe Int])
 rb [] [] = ([], [])
 rb [] [a] = ([], [a])
 rb [] (a:b:as) = ([], b:as ++ [a])
+rb _ _ = ([], [])
 
 rr :: [Maybe Int] -> [Maybe Int] -> ([Maybe Int], [Maybe Int])
 rr [] [] = ([], [])
@@ -65,11 +70,13 @@ rra :: [Maybe Int] -> [Maybe Int] -> ([Maybe Int], [Maybe Int])
 rra [] [] = ([], [])
 rra [a] [b] = ([a], [b])
 rra (a:as) [b] = (last (a:as) : init (a:as), [b])
+rra _ _ = ([], [])
 
 rrb :: [Maybe Int] -> [Maybe Int] -> ([Maybe Int], [Maybe Int])
 rrb [] [] = ([], [])
 rrb [a] [b] = ([a], [b])
 rrb [a] (b:bs) = ([a], last (b:bs) : init (b:bs))
+rrb _ _ = ([], [])
 
 rrr :: [Maybe Int] -> [Maybe Int] -> ([Maybe Int], [Maybe Int])
 rrr [] [] = ([], [])
@@ -82,7 +89,19 @@ argsIntToIntList [] = []
 argsIntToIntList (a:as) = map readMaybe (a:as)
 
 getAction :: String -> ([Maybe Int],[Maybe Int])  -> ([Maybe Int], [Maybe Int])
-getAction _ = rrb
+getAction "sa" (a, b) = sa a b
+getAction "sb" (a, b) = sb a b
+getAction "sc" (a, b) = sc a b
+getAction "pa" (a, b) = pa a b
+getAction "pb" (a, b) = pb a b
+getAction "ra" (a, b) = ra a b
+getAction "rb" (a, b) = rb a b
+getAction "rr" (a, b) = ra a b
+getAction "rra" (a, b) = rra a b
+getAction "rrb" (a, b) = rrb a b
+getAction "rrr" (a, b) = rrr a b
+getAction _ _ = ([], [])
+
 
 findActions :: [String] -> ([Maybe Int], [Maybe Int]) -> ([Maybe Int], [Maybe Int])
 findActions ("sa":b)  (a : c, as) = getAction "sa" (a : c, as)
@@ -98,8 +117,9 @@ findActions ("rrb":b) (a : c, as)  = getAction "rrb" (a : c, as)
 findActions ("rrr":b) (a : c, as)  = getAction "rrr" (a : c, as)
 findActions _ _ = ([], [])
 
-doProcess :: [String] -> ([Maybe Int], [Maybe Int]) -> [Maybe Int]
-doProcess [] b = []
+doProcess :: [String] -> ([Maybe Int], [Maybe Int]) -> ([Maybe Int], [Maybe Int])
+doProcess [] b = b
+doProcess (a:xs) (b, []) = doProcess xs (findActions (a:xs) (b, []))
 doProcess (a:xs) b = doProcess xs (findActions (a:xs) b)
 
 main :: IO ()
