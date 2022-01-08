@@ -5,6 +5,7 @@ jobs:
     name: Verification of compile projet
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v1
       - run: sudo apt-get install haskell-platform
       - run: sudo apt-get install libghc-hunit-dev
       - run: make
