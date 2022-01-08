@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wno-overlapping-patterns #-}
 module Pushswap where
 import System.Environment
 import Data.Char
@@ -61,7 +62,7 @@ rr a [] = (ra a, [])
 rr [] a = ([], rb a)
 rr a b = (ra a, rb b)
 
-rra :: [Int] -> [Int]
+rra :: [Maybe Int] -> [Maybe Int]
 rra [] = []
 rra [a] = [a]
 rra (a:as) = last (a:as) : init (a:as)
@@ -71,11 +72,11 @@ rrb [] = []
 rrb [a] = [a]
 rrb (a:as) = last (a:as) : init (a:as)
 
--- rrr :: [Int] -> [Int] -> ([Int], [Int])
--- rrr [] [] = ([], [])
--- rrr a [] = (rra a, [])
--- rrr [] a = ([], rrb a)
--- rrr a b = (rra a, rrb b)
+rrr :: [Maybe Int] -> [Maybe Int] -> ([Maybe Int], [Maybe Int])
+rrr [] [] = ([], [])
+rrr a [] = (rra a, [])
+rrr [] a = ([], rrb a)
+rrr a b = (rra a, rrb b)
 
 argsIntToIntList :: [String] -> [Maybe Int]
 argsIntToIntList [] = []
@@ -84,8 +85,8 @@ argsIntToIntList (a:as) = map readMaybe (a:as)
 getAction :: String -> ([Maybe Int] -> [Maybe Int])
 getAction _ = rrb
 
-findActions :: [String] -> [Maybe Int] -> [Maybe Int]
-findActions ("sa":b)  (a:as) = getAction "sa" (a:as)
+findActions :: [String] -> ([Maybe Int], [Maybe Int])-> [Maybe Int]
+findActions ("sa":b)  ((a : c): as) = getAction "sa" (a:as)
 findActions ("sb":b)  (a:as) = getAction "sb" (a:as)
 findActions ("sc":b)  (a:as) = getAction "sc" (a:as)
 findActions ("pa":b)  (a:as) = getAction "pa" (a:as)
@@ -93,12 +94,10 @@ findActions ("pb":b)  (a:as) = getAction "pb" (a:as)
 findActions ("ra":b)  (a:as) = getAction "ra" (a:as)
 findActions ("rb":b)  (a:as) = getAction "rb" (a:as)
 findActions ("rr":b)  (a:as) = getAction "rr" (a:as)
-findActions ("ra":b)  (a:as) = getAction "ra" (a:as)
-findActions ("rb":b)  (a:as) = getAction "rb" (a:as)
+findActions ("rra":b)  (a:as) = getAction "rra" (a:as)
+findActions ("rrb":b)  (a:as) = getAction "rrb" (a:as)
 findActions ("rrr":b)  (a:as) = getAction "rrr" (a:as)
-
-doProcess :: [String] -> [Maybe Int] -> String
-doProcess a b =  if myCheckListSort (findActions a b) then "OK" else "KO"
+findActions _ _ = []
 
 main :: IO ()
 main = do
@@ -106,5 +105,6 @@ main = do
     args <- getArgs
     let intList = argsIntToIntList args
     let actions = myStwa actionsStr
-    if Nothing `elem` intList then exitWith(ExitFailure 84) 
-    else print (doProcess actions intList)
+    if Nothing `elem` intList then exitWith(ExitFailure 84)
+    else putStr ""
+    if myCheckListSort (findActions actions intList) then print "OK" >> exitSuccess else print "KO" >> exitWith(ExitFailure 84)
