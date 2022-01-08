@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: sudo apt-get install haskell-platform
-      - run: curl -sSL https://get.haskellstack.org/ | sh -s -f
+      - run: sudo apt-get install libghc-hunit-dev
       - run: make
       - run: make fclean
       - run: make re
