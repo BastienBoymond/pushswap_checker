@@ -1,7 +1,6 @@
 module Pushswap where
 import System.Environment
 import Data.Char
-import Data.List.Split
 import System.Exit
 import System.IO
 import Data.Maybe
@@ -9,7 +8,7 @@ import Text.Read
 
 myStwa :: String -> [String]
 myStwa "" = []
-myStwa s = splitOn " " s
+myStwa s = words s
 
 myCheckListSort :: ([Maybe Int], [Maybe Int]) -> Bool
 myCheckListSort ([], []) = True
@@ -68,12 +67,14 @@ rr a b = ra a [] >> rb [] b
 
 rra :: [Maybe Int] -> [Maybe Int] -> ([Maybe Int], [Maybe Int])
 rra [] [] = ([], [])
+rra (a:as) [] = (last (a:as) : init (a:as), [])
 rra [a] [b] = ([a], [b])
 rra (a:as) [b] = (last (a:as) : init (a:as), [b])
 rra _ _ = ([], [])
 
 rrb :: [Maybe Int] -> [Maybe Int] -> ([Maybe Int], [Maybe Int])
 rrb [] [] = ([], [])
+rrb [] (b:bs) = ([], last (b:bs) : init (b:bs))
 rrb [a] [b] = ([a], [b])
 rrb [a] (b:bs) = ([a], last (b:bs) : init (b:bs))
 rrb _ _ = ([], [])
