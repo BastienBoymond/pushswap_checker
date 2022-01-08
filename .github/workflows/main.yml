@@ -7,9 +7,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - run: sudo apt-get install haskell-platform
-      - run: stack install HUnit
       - run: make
       - run: make fclean
       - run: make re
-      - run: make tests_run
       - run: make && ./tests/test.sh
