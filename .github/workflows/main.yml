@@ -5,7 +5,7 @@ jobs:
     name: Verification of compile projet
     runs-on: ubuntu-latest
     steps:
-      - run: sudo apt-get install make
+      - uses: actions/checkout@v1
       - run: sudo apt-get install haskell-platform
       - run: make
       - run: make fclean
