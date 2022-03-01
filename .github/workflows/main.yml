@@ -10,4 +10,3 @@ jobs:
       - run: make
       - run: make fclean
       - run: make re
-      - run: make && ./tests/test.sh
